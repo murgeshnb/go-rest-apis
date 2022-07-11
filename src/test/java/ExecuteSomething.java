@@ -1,8 +1,12 @@
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.is;
 
 public class ExecuteSomething {
     @Test
@@ -16,7 +20,11 @@ public class ExecuteSomething {
                     .get("https://gorest.co.in/public/v2/users")
                 .then()
                     .statusCode(200)
-                    .log().body();
+                    .log().body()
+                    .body("[0].gender",Matchers.equalTo("female"))
+                    .body(".",Matchers.hasItem(Matchers.hasEntry("gender","female")));
+//                    .body(is(10))
+//                    .assertThat().body(Matchers.hasSize(10));
     }
 
     @Test
@@ -28,13 +36,17 @@ public class ExecuteSomething {
                 .body("{\n" +
                         "  \"name\": \"Tenali Ramakrishna\",\n" +
                         "  \"gender\": \"male\",\n" +
-                        "  \"email\": \"tenali.ramakrishna3@gmail.com\",\n" +
+                        "  \"email\": \"tenali.ramakrishna5@gmail.com\",\n" +
                         "  \"status\": \"active\"\n" +
                         "}")
                 .when()
                     .post("https://gorest.co.in/public/v2/users")
                 .then()
-                .log().body()
-                .statusCode(201);
+                    .log().body()
+                    .statusCode(201)
+
+                .body("id", Matchers.notNullValue())
+                .body("email",Matchers.equalTo("tenali.ramakrishna5@gmail.com"));
+
     }
 }
