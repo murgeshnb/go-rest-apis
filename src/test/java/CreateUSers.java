@@ -1,3 +1,4 @@
+import create.CreateUserRequestBody;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
@@ -22,19 +23,19 @@ public class CreateUSers {
     public void createNewMaleUSer(){
         //Arrange
         String email= String.format("%s@gmail.com", UUID.randomUUID());
-        
-        String body=String.format(" \"name\": \"Tenali Ramakrishna\",\n"
-                +" \"gender\": \"male\",\n"
-                +" \"email\": \"%s\",\n",email);
+        String name = "Tenali Ramakrishna";
+        String gender = "male";
+        String status = "active";
+        CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody(name,gender,email,status);
 
         //Act
-        usersClient.createUser(body)
+        usersClient.createUser(createUserRequestBody)
                 .then()
                 .log().body()
         //Assert
                 .statusCode(201)
                 .body("id", Matchers.notNullValue())
-                .body("email",Matchers.equalTo(String.format("%s",email)))
+                .body("email",Matchers.equalTo(email))
                 .body("name",Matchers.equalTo("Tenali Ramakrishna"));
 
     }
@@ -43,12 +44,14 @@ public class CreateUSers {
     public void createNewFemaleUSer(){
         //Arrange
         String email = String.format("%s@gmail.com", UUID.randomUUID());
-        String body=String.format(" \"name\": \"Raziya\",\n"+
-                " \"gender\": \"female\",\n"+
-                " \"email\": \"%s\",\n",email);
+        String name = "Raziya";
+        String gender = "female";
+        String status = "active";
+
+        CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody(name, gender, email, status);
 
         //Act
-        usersClient.createUser(body)
+        usersClient.createUser(createUserRequestBody)
                 .then()
                 .log().body()
 
@@ -58,6 +61,4 @@ public class CreateUSers {
                 .body("email",Matchers.equalTo(email))
                 .body("name",Matchers.equalTo("Raziya"));
     }
-
-
 }
