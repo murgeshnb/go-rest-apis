@@ -11,10 +11,4 @@ public class CreateUserRequestBody {
     private String email;
     private String status;
 
-    public CreateUserRequestBody(String name, String gender, String email, String status) {
-        this.name = name;
-        this.gender = gender;
-        this.email = email;
-        this.status = status;
-    }
 }

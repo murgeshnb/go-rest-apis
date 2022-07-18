@@ -1,7 +1,9 @@
 import create.CreateUserRequestBody;
+import create.response.CreateUserResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
+import static org.testng.Assert.*;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
@@ -26,15 +28,10 @@ public class CreateUSers {
         CreateUserRequestBody createUserRequestBody = CreateUserRequestBody.builder().name("Tenali Ramakrishna").email(email).gender("male").status("active").build();
 
         //Act
-        usersClient.createUser(createUserRequestBody)
-                .then()
-                .log().body()
-        //Assert
-                .statusCode(201)
-                .body("id", Matchers.notNullValue())
-                .body("email",Matchers.equalTo(email))
-                .body("name",Matchers.equalTo("Tenali Ramakrishna"));
+        CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);
 
+        //Assert
+        createUserResponse.assertUser(createUserRequestBody);
     }
 
     @Test
@@ -44,14 +41,10 @@ public class CreateUSers {
 
         CreateUserRequestBody createUserRequestBody = CreateUserRequestBody.builder().name("Raziya").gender("female").email(email).status("active").build();
         //Act
-        usersClient.createUser(createUserRequestBody)
-                .then()
-                .log().body()
+        CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);
 
         //Assert
-                .statusCode(201)
-                .body("id", Matchers.notNullValue())
-                .body("email",Matchers.equalTo(email))
-                .body("name",Matchers.equalTo("Raziya"));
+        createUserResponse.assertUser(createUserRequestBody);
+
     }
 }
