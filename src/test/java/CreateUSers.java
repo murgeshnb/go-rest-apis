@@ -38,13 +38,12 @@ public class CreateUSers {
     public void createNewFemaleUSer(){
         //Arrange
         String email = String.format("%s@gmail.com", UUID.randomUUID());
-
         CreateUserRequestBody createUserRequestBody = CreateUserRequestBody.builder().name("Raziya").gender("female").email(email).status("active").build();
+
         //Act
         CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);
 
         //Assert
         createUserResponse.assertUser(createUserRequestBody);
-
     }
 }

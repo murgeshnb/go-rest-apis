@@ -22,21 +22,12 @@ public class CreateUsersNegativeTests {
         //Act
         CreateUserErrorResponse[] negativeResponse = usersClient.createUserExpectingError(createUserRequestBody);
 
-
-                //Aseert
-
-//        assertEquals(negativeResponse.getStatusCode(),422);
-
+        //Aseert
         for (CreateUserErrorResponse responses:negativeResponse) {
             assertEquals(responses.getStatusCode(),422);
-
             responses.assertHasError("email","is invalid");
-       //     negative.assertHasError("status","can't be blank");
         }
-
-    //    negativeResponse.assertHasError("email","is invalid");
-
-        }
+    }
 
         @Test
     public void shouldNotAllowToCreateUserWithBlankGender(){

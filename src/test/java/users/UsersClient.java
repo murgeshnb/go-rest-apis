@@ -5,9 +5,7 @@ import create.response.CreateUserErrorResponse;
 import create.response.CreateUserResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import users.getAll.GetAllUsersResponse;
 
 import static io.restassured.RestAssured.given;
 
@@ -17,8 +15,8 @@ public class UsersClient {
         Response response = create(body);
         CreateUserResponse createUserResponse = response.as(CreateUserResponse.class);
         createUserResponse.setStatusCode(response.statusCode());
-        return
-                createUserResponse;
+
+        return createUserResponse;
     }
 
     public CreateUserErrorResponse[] createUserExpectingError(CreateUserRequestBody body) {
@@ -26,20 +24,9 @@ public class UsersClient {
         Response negativeResponse = create(body);
         CreateUserErrorResponse[] createUserErrorResponse = negativeResponse.as(CreateUserErrorResponse[].class);
 
-//        List<Field> all = negativeResponse.getBody().as(new TypeRef<List<Field>>() {
-//        });
-//
-//        System.out.println(all);
-
-//        Arrays.stream(createUserErrorResponse).filter(f->f.setStatusCode(negativeResponse.statusCode())).collect(Collectors.toList());
-
         for (CreateUserErrorResponse  resp:createUserErrorResponse) {
             resp.setStatusCode(negativeResponse.statusCode());
         }
-
-//        createUserErrorResponse.setStatusCode(negativeResponse.statusCode());
-
-//        return createUserErrorResponse;
         return createUserErrorResponse;
     }
 
@@ -58,9 +45,17 @@ public class UsersClient {
         return response;
     }
 
-    public Response getAllUsers() {
-        return given()
+    public GetAllUsersResponse getAllUsers() {
+
+        Response response = given()
                 .when()
-                    .get("https://gorest.co.in/public/v2/users");
+                .get("https://gorest.co.in/public/v1/users");
+        response
+                .then().log().body();
+
+        GetAllUsersResponse getAllUsersResponse = response.as(GetAllUsersResponse.class);
+        getAllUsersResponse.setStatusCode(response.statusCode());
+
+        return getAllUsersResponse;
     }
 }
