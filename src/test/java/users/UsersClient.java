@@ -1,38 +1,12 @@
 package users;
 
 import create.CreateUserRequestBody;
-import create.response.CreateUserErrorResponse;
-import create.response.CreateUserResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import users.get.GetUserResponse;
-import users.getAll.GetAllUsersResponse;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 public class UsersClient {
-
-    public CreateUserResponse createUser(CreateUserRequestBody body) {
-        Response response = create(body);
-        CreateUserResponse createUserResponse = response.as(CreateUserResponse.class);
-        createUserResponse.setStatusCode(response.statusCode());
-
-        return createUserResponse;
-    }
-
-    public CreateUserErrorResponse[] createUserExpectingError(CreateUserRequestBody body) {
-
-        Response negativeResponse = create(body);
-        CreateUserErrorResponse[] createUserErrorResponse = negativeResponse.as(CreateUserErrorResponse[].class);
-
-        for (CreateUserErrorResponse  resp:createUserErrorResponse) {
-            resp.setStatusCode(negativeResponse.statusCode());
-        }
-        return createUserErrorResponse;
-    }
-
-
     public Response create(CreateUserRequestBody body) {
         Response response = given()
                     .accept(ContentType.JSON)
@@ -47,33 +21,53 @@ public class UsersClient {
         return response;
     }
 
-    public GetAllUsersResponse getAllUsers() {
-
+    public Response getAll() {
         Response response = given()
                 .when()
                 .get("https://gorest.co.in/public/v1/users");
         response
                 .then().log().body();
-
-        GetAllUsersResponse getAllUsersResponse = response.as(GetAllUsersResponse.class);
-        getAllUsersResponse.setStatusCode(response.statusCode());
-
-        return getAllUsersResponse;
+        return response;
     }
 
-    public GetUserResponse getUserOnId(int id){
+    public Response get(int id) {
         Response response = given()
                 .pathParam("id", id)
                 .when()
                 .get("https://gorest.co.in/public/v2/users/{id}");
 
         response.then().log().body();
-        int statusCode = response.statusCode();
+        return response;
+    }
 
-        GetUserResponse getUserResponse = response.as(GetUserResponse.class);
+    public Response delete(int id){
+        Response response =
+          given()
+                .pathParam("id", id)
+                .header("Authorization", "Bearer b2ec65fbe6a01c4fdd06094347e0fc47815f17e078af6459aea9cc9e0c511d1b")
+          .when()
+                .delete("https://gorest.co.in/public/v2/users/{id}");
 
-        getUserResponse.setStatusCode(statusCode);
+        response.then()
+                .log().body();
 
-        return getUserResponse;
+        return  response;
+    }
+
+    public Response updateUser(CreateUserRequestBody createUserRequestBody,int id){
+        Response response =
+                given()
+                    .pathParam("id", id)
+                    .accept(ContentType.JSON)
+                    .contentType(ContentType.JSON)
+                    .header("Authorization", "Bearer b2ec65fbe6a01c4fdd06094347e0fc47815f17e078af6459aea9cc9e0c511d1b")
+                    .body(createUserRequestBody)
+                .when()
+                     .patch("https://gorest.co.in/public/v2/users/{id}");
+
+        response
+                .then().log().body();
+
+        return response;
     }
 }

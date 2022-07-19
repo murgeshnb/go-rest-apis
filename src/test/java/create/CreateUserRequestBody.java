@@ -49,6 +49,11 @@ public class CreateUserRequestBody {                //Achieved immutability of o
             return this;
         }
 
+        public Builder name(String name){
+            this.name=name;
+            return this;
+        }
+
         //step4 method which returns new instance of CURB
         public CreateUserRequestBody build(){
             CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody(this);

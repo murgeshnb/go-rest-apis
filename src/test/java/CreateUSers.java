@@ -2,17 +2,17 @@ import create.CreateUserRequestBody;
 import create.response.CreateUserResponse;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import users.UsersClient;
+import users.UserService;
 
 import static io.restassured.RestAssured.given;
 
 public class CreateUSers {
 
-    private UsersClient usersClient;
+    private UserService userService;
 
     @BeforeClass
     public void beforeClass(){
-        usersClient=new UsersClient();
+        userService =new UserService();
     }
 
     @Test
@@ -21,7 +21,7 @@ public class CreateUSers {
         CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().gender("male").build();
 
         //Act
-        CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);
+        CreateUserResponse createUserResponse = userService.createUser(createUserRequestBody);
 
         //Assert
         createUserResponse.assertUser(createUserRequestBody);
@@ -33,7 +33,7 @@ public class CreateUSers {
         CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().gender("female").build();
 
         //Act
-        CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);
+        CreateUserResponse createUserResponse = userService.createUser(createUserRequestBody);
 
         //Assert
         createUserResponse.assertUser(createUserRequestBody);

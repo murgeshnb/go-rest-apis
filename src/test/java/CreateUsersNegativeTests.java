@@ -2,17 +2,17 @@ import create.CreateUserRequestBody;
 import create.response.CreateUserErrorResponse;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import users.UsersClient;
+import users.UserService;
 
 import static org.testng.Assert.*;
 
 public class CreateUsersNegativeTests {
 
-    private UsersClient usersClient;
+    private UserService userService;
 
     @BeforeClass
     public void beforeClass(){
-        usersClient=new UsersClient();
+        userService =new UserService();
     }
 
     @Test
@@ -21,7 +21,7 @@ public class CreateUsersNegativeTests {
         CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().email("agmail.com").build();
 
         //Act
-        CreateUserErrorResponse[] negativeResponse = usersClient.createUserExpectingError(createUserRequestBody);
+        CreateUserErrorResponse[] negativeResponse = userService.createUserExpectingError(createUserRequestBody);
 
         //Aseert
         for (CreateUserErrorResponse responses:negativeResponse) {
@@ -36,7 +36,7 @@ public class CreateUsersNegativeTests {
             CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().gender("").build();
 
             //Act
-            CreateUserErrorResponse[] negativeResponse = usersClient.createUserExpectingError(createUserRequestBody);
+            CreateUserErrorResponse[] negativeResponse = userService.createUserExpectingError(createUserRequestBody);
 
             //Assert
             for (CreateUserErrorResponse responses:negativeResponse) {
@@ -50,7 +50,7 @@ public class CreateUsersNegativeTests {
         CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().status("").build();
 
         //Act
-        CreateUserErrorResponse[] negativeResponse = usersClient.createUserExpectingError(createUserRequestBody);
+        CreateUserErrorResponse[] negativeResponse = userService.createUserExpectingError(createUserRequestBody);
 
         //Assert
         for (CreateUserErrorResponse responses:negativeResponse) {

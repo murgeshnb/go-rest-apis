@@ -1,7 +1,7 @@
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import users.UsersClient;
+import users.UserService;
 import users.getAll.GetAllUsersResponse;
 
 import static org.testng.Assert.assertEquals;
@@ -10,16 +10,17 @@ import static org.testng.Assert.assertTrue;
 public class GetAllUsers {
 
     //Arrange
-    private UsersClient usersClient;
+    private UserService userService;
 
     @BeforeClass
     public void beforeClass(){
-        usersClient=new UsersClient();
+        userService=new UserService();
     }
+
     @Test
     public void getAllUSers(){
         //Act
-        GetAllUsersResponse getAllUsersResponse = usersClient.getAllUsers();
+        GetAllUsersResponse getAllUsersResponse = userService.getAllUsers();
 
         //Assert
         assertEquals(getAllUsersResponse.getStatusCode(),200);
