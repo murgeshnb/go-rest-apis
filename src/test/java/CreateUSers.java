@@ -1,14 +1,8 @@
 import create.CreateUserRequestBody;
 import create.response.CreateUserResponse;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.hamcrest.Matchers;
-import static org.testng.Assert.*;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import users.UsersClient;
-
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 
@@ -24,8 +18,7 @@ public class CreateUSers {
     @Test
     public void createNewMaleUSer(){
         //Arrange
-        String email= String.format("%s@gmail.com", UUID.randomUUID());
-        CreateUserRequestBody createUserRequestBody = CreateUserRequestBody.builder().name("Tenali Ramakrishna").email(email).gender("male").status("active").build();
+        CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().gender("male").build();
 
         //Act
         CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);
@@ -37,8 +30,7 @@ public class CreateUSers {
     @Test
     public void createNewFemaleUSer(){
         //Arrange
-        String email = String.format("%s@gmail.com", UUID.randomUUID());
-        CreateUserRequestBody createUserRequestBody = CreateUserRequestBody.builder().name("Raziya").gender("female").email(email).status("active").build();
+        CreateUserRequestBody createUserRequestBody = new CreateUserRequestBody.Builder().gender("female").build();
 
         //Act
         CreateUserResponse createUserResponse = usersClient.createUser(createUserRequestBody);

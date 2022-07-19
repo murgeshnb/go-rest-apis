@@ -5,8 +5,10 @@ import create.response.CreateUserErrorResponse;
 import create.response.CreateUserResponse;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import users.get.GetUserResponse;
 import users.getAll.GetAllUsersResponse;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 public class UsersClient {
@@ -57,5 +59,21 @@ public class UsersClient {
         getAllUsersResponse.setStatusCode(response.statusCode());
 
         return getAllUsersResponse;
+    }
+
+    public GetUserResponse getUserOnId(int id){
+        Response response = given()
+                .pathParam("id", id)
+                .when()
+                .get("https://gorest.co.in/public/v2/users/{id}");
+
+        response.then().log().body();
+        int statusCode = response.statusCode();
+
+        GetUserResponse getUserResponse = response.as(GetUserResponse.class);
+
+        getUserResponse.setStatusCode(statusCode);
+
+        return getUserResponse;
     }
 }
